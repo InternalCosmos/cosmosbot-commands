@@ -1,0 +1,30 @@
+const { promisify } = require("util");
+const exec = promisify(require("child_process").exec);
+
+exports.run = async (client, msg, [input]) => {
+  const result = await exec(input);
+
+  const output = result.stdout ? `**\`OUTPUT\`**${"```"}\n${result.stdout}\n${"```"}` : "";
+  const outerr = result.stderr ? `**\`ERROR\`**${"```"}\n${result.stderr}\n${"```"}` : "";
+  return msg.channel.send([output, outerr].join("\n"));
+
+};
+
+  exports.conf = {
+    enabled: true,
+    runIn: ["text", "dm"],
+    aliases: [],
+    permLevel: 10,
+    botPerms: [],
+    requiredFuncs: [],
+    requiredSettings: [],
+  };
+
+  exports.help = {
+    name: "exec",
+    description: "Execute commands in the terminal, use with EXTREME CAUTION.",
+    usage: "<expression:str>",
+    usageDelim: "",
+    category: "",
+    subcategory: ""
+  };
